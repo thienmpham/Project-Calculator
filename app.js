@@ -25,3 +25,10 @@ function divide([nums]) {
     return (total /= num);
   }
 }
+
+function operate([inputs], operator) {
+  for (let input of inputs) {
+  }
+}
+
+function storeInputs() {}

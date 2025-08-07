@@ -1,0 +1,44 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20%;
+}
+button {
+  margin: 0;
+}
+.calculator-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.screen-container {
+  height: 5vw;
+
+  padding-bottom: 5%;
+}
+.screen {
+  background-color: yellow;
+  outline: 0.1vw solid;
+  height: 90%;
+  border-radius: 20px;
+}
+.calculator {
+  display: flex;
+
+  width: 20vw;
+  background-color: blue;
+}
+.btn-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.btn-container button {
+  width: 10%;
+  aspect-ratio: 16/9;
+  flex-basis: calc(25% - 2%);
+  border-radius: 32px;
+}
