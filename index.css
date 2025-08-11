@@ -42,3 +42,6 @@ button {
   flex-basis: calc(25% - 2%);
   border-radius: 32px;
 }
+.btn-container button:hover {
+  background-color: lightgray;
+}
