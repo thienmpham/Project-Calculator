@@ -32,14 +32,21 @@ function operate([inputs], operator) {
 }
 
 function displayInputs() {
-  let numbers = document.querySelectorAll(".btn-num");
+  let numbers = document.querySelectorAll(".btn");
+
   let inputs = [];
   // iterate through each array item
   for (num of numbers) {
     num.addEventListener("click", function (e) {
-      handleNumClick;
-      inputs += assignNumValue(e);
-      console.log("inputs:", inputs);
+      console.log(e.target.className);
+      if (e.target.className == "btn btn-op") {
+        console.log("op");
+      }
+      if (e.target.className == "btn btn-num") {
+        handleNumClick(e);
+        inputs += assignNumValue(e);
+        console.log("inputs:", inputs);
+      }
     });
   }
 }
@@ -49,18 +56,8 @@ function handleNumClick(e) {
   let screen = document.querySelector(".screen");
   let numValue = assignNumValue(e);
 
-  console.log(e.target.id);
   screen.innerHTML += numValue;
-  console.log(screen.innerHTML);
-
-  // inputs.push(assignNumValue(e));
-  // console.log("numValues:", numValues);
-  //IDEA;
-  //
   return numValue;
-
-  //if !btn-num is clicked, then
-  //return value on screen;
 }
 
 function assignNumValue(e) {
@@ -68,8 +65,6 @@ function assignNumValue(e) {
   for (i = 0; i <= 9; i++) {
     if (e.target.id == `btn-${i}`) {
       input = `${i}`;
-      console.log(input);
-
       return input;
     }
   }
@@ -84,5 +79,5 @@ function assignNumValue(e) {
 // ... the current value of input
 
 // CURRENT GOAL
-// Push the value of what is on the screen
-// when !btn-num is pressed.
+// If an operative btn is pushed
+// ..then start to store the next set of #'s
