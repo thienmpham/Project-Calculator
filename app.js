@@ -33,8 +33,8 @@ function operate([inputs], operator) {
 
 function displayInputs() {
   let numbers = document.querySelectorAll(".btn");
-
   let inputs = [];
+  let screen = document.querySelector(".screen");
   // iterate through each array item
   for (num of numbers) {
     num.addEventListener("click", function (e) {
@@ -46,6 +46,10 @@ function displayInputs() {
         handleNumClick(e);
         inputs += assignNumValue(e);
         console.log("inputs:", inputs);
+      }
+      if (e.target.id == "btn-clear") {
+        screen.innerHTML = null;
+        inputs = [];
       }
     });
   }
@@ -62,6 +66,7 @@ function handleNumClick(e) {
 
 function assignNumValue(e) {
   let input;
+
   for (i = 0; i <= 9; i++) {
     if (e.target.id == `btn-${i}`) {
       input = `${i}`;
