@@ -8,8 +8,8 @@ function add(nums) {
 
 function subtract(nums) {
   let total = 0;
-  for (let num of nums) {
-    total -= num;
+  for (let i = 0; i < nums.length - 1; i++) {
+    total = nums[i] - nums[i + 1];
   }
   return total;
 }
@@ -24,8 +24,8 @@ function multiply(nums) {
 
 function divide(nums) {
   let total = 1;
-  for (let num of nums) {
-    total /= num;
+  for (let i = 0; i < nums.length - 1; i++) {
+    total = nums[i] / nums[i + 1];
   }
   return total;
 }
@@ -77,6 +77,7 @@ function displayInputs() {
   let screen = document.querySelector(".screen");
   let operator;
   let total;
+  let value;
   // iterate through each array item
 
   for (num of numbers) {
@@ -101,30 +102,42 @@ function displayInputs() {
         screen.innerHTML !== "" &&
         total !== undefined
       ) {
+        screen.innerHTML = null;
+        inputs = [];
         operator = chooseOperator(e);
-        console.log("storedArray:", inputsArray);
+        console.log("storedArray#total:", inputsArray);
       }
 
       if (e.target.id == "btn-equals" && screen.innerHTML !== "") {
-        console.log("stored:", inputs);
+        console.log("stored#equals:", inputs);
         inputs = parseInt(inputs);
         inputsArray.push(inputs);
-        console.log("storedArray:", inputsArray);
+        console.log("storedArray#equals:", inputsArray);
         console.log("operator = ", operator);
-        // operate(inputsArray, operator);
         total = operate(inputsArray, operator);
         screen.innerHTML = total;
         inputsArray = [];
         inputsArray.push(total);
       }
       if (e.target.className == "btn btn-num") {
-        screen.innerHTML = null;
-        inputs = [];
-
         handleNumClick(e);
         inputs += assignNumValue(e);
         console.log("inputs:", inputs);
       }
+      // if (
+      //   e.target.className == "btn btn-num" &&
+      //   total !== undefined &&
+      //   inputsArray !== undefined
+      // ) {
+      //   screen.innerHTML = null;
+      //   total = null;
+      //   inputs = [];
+      //   inputsArray = [];
+      //   handleNumClick(e);
+      //   inputs += assignNumValue(e);
+      //   console.log("inputs 2:", inputs);
+      // }
+
       if (e.target.id == "btn-clear") {
         screen.innerHTML = null;
         total = null;
