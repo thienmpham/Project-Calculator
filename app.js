@@ -77,6 +77,8 @@ function displayInputs() {
   let screen = document.querySelector(".screen");
   let operator;
   let total;
+  // boolean value if operation i"s in screen.innerHTML
+  let containsOperator = false;
   // iterate through each array item
 
   for (num of numbers) {
@@ -85,8 +87,10 @@ function displayInputs() {
       if (
         e.target.className == "btn btn-op" &&
         // screen.innerHTML !== "" &&
-        total == undefined
+        total == undefined &&
+        containsOperator == false
       ) {
+        containsOperator = checkScreen(screen);
         // screen.innerHTML = null;
         screen.innerHTML += displayOperator(e);
         console.log("stored:", inputs);
@@ -101,10 +105,12 @@ function displayInputs() {
       if (
         e.target.className == "btn btn-op" &&
         // screen.innerHTML !== "" &&
-        total !== undefined
+        total !== undefined &&
+        containsOperator == false
       ) {
         // screen.innerHTML = null;
         screen.innerHTML += displayOperator(e);
+        containsOperator = checkScreen(screen);
         inputs = [];
         operator = chooseOperator(e);
         console.log("storedArray#total:", inputsArray);
@@ -114,6 +120,7 @@ function displayInputs() {
         e.target.id == "btn-equals"
         // && screen.innerHTML !== ""
       ) {
+        containsOperator = false;
         console.log("stored#equals:", inputs);
         inputs = parseInt(inputs);
         inputsArray.push(inputs);
@@ -128,26 +135,13 @@ function displayInputs() {
         inputs += assignNumValue(e);
         console.log("inputs:", inputs);
       }
-      // if (
-      //   e.target.className == "btn btn-num" &&
-      //   total !== undefined &&
-      //   inputsArray !== undefined
-      // ) {
-      //   screen.innerHTML = null;
-      //   total = null;
-      //   inputs = [];
-      //   inputsArray = [];
-      //   handleNumClick(e);
-      //   inputs += assignNumValue(e);
-      //   console.log("inputs 2:", inputs);
-      // }
 
       if (e.target.id == "btn-clear") {
         screen.innerHTML = null;
         total = undefined;
         inputs = [];
         inputsArray = [];
-        console.log("clear");
+        containsOperator = console.log("clear");
       }
     });
   }
@@ -168,7 +162,20 @@ function displayOperator(e) {
     return "÷";
   }
 }
-
+function checkScreen(screen) {
+  // Make operation signs into an array
+  // Check to see if screen.innerHTML includes an operation
+  //// with For loop
+  let html = screen.innerHTML;
+  let operationArray = ["+", "–", "×", "÷"];
+  console.log("includes subtract", html.includes(operationArray[0]));
+  for (let i = 0; i < operationArray.length - 1; i++) {
+    if (html.includes(operationArray[i])) {
+      console.log("includes ops");
+      return true;
+    }
+  }
+}
 function handleNumClick(e) {
   let screen = document.querySelector(".screen");
   let numValue = assignNumValue(e);
