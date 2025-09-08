@@ -78,12 +78,15 @@ function displayInputs() {
   let operator;
   let total;
   // boolean value if operation i"s in screen.innerHTML
-  let containsOperator = false;
+  let containsOperator;
   // iterate through each array item
 
   for (num of numbers) {
     num.addEventListener("click", function (e) {
       // initial total
+      if (e.target.className == "btn btn-op") {
+        containsOperator = checkScreen(screen);
+      }
       if (
         e.target.className == "btn btn-op" &&
         // screen.innerHTML !== "" &&
@@ -169,12 +172,13 @@ function checkScreen(screen) {
   let html = screen.innerHTML;
   let operationArray = ["+", "–", "×", "÷"];
   console.log("includes subtract", html.includes(operationArray[0]));
-  for (let i = 0; i < operationArray.length - 1; i++) {
+  for (let i = 0; i < operationArray.length; i++) {
     if (html.includes(operationArray[i])) {
       console.log("includes ops");
       return true;
     }
   }
+  return false;
 }
 function handleNumClick(e) {
   let screen = document.querySelector(".screen");
