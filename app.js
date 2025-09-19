@@ -77,6 +77,11 @@ function displayInputs() {
   let screen = document.querySelector(".screen");
   let operator;
   let total;
+
+  let operationArray = ["+", "–", "×", "÷"];
+  let operatorIndex;
+  let numberArray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  let operatorIsBeforeNum;
   // boolean value if operation i"s in screen.innerHTML
   let containsOperator;
   // iterate through each array item
@@ -87,14 +92,15 @@ function displayInputs() {
       if (e.target.className == "btn btn-op") {
         containsOperator = checkScreen(screen);
       }
+
       if (
         e.target.className == "btn btn-op" &&
-        // screen.innerHTML !== "" &&
         total == undefined &&
         containsOperator == false
       ) {
         containsOperator = checkScreen(screen);
-        // screen.innerHTML = null;
+        displayOperator(e);
+
         screen.innerHTML += displayOperator(e);
         console.log("stored:", inputs);
         inputs = parseInt(inputs);
@@ -103,6 +109,19 @@ function displayInputs() {
         operator = chooseOperator(e);
         console.log(operator, "#oop");
         console.log("storedArray:", inputsArray, "op");
+
+        console.log("inputsArray.length @@@:", inputsArray.length);
+      }
+
+      //to replace operator when clicking another operator btn
+      if (
+        e.target.className == "btn btn-op" &&
+        containsOperator == true &&
+        operatorIsBeforeNum == false
+      ) {
+        screen.innerHTML = replaceOperator(e, screen);
+        operator = chooseOperator(e);
+        console.log("contains true: ", screen.innerHTML);
       }
 
       if (
@@ -116,13 +135,10 @@ function displayInputs() {
         containsOperator = checkScreen(screen);
         inputs = [];
         operator = chooseOperator(e);
-        console.log("storedArray#total:", inputsArray);
       }
 
-      if (
-        e.target.id == "btn-equals"
-        // && screen.innerHTML !== ""
-      ) {
+      // when click "="
+      if (e.target.id == "btn-equals") {
         containsOperator = false;
         console.log("stored#equals:", inputs);
         inputs = parseInt(inputs);
@@ -133,10 +149,18 @@ function displayInputs() {
         inputsArray = [];
         inputsArray.push(total);
       }
+
+      //when any # is clicked
       if (e.target.className == "btn btn-num") {
         handleNumClick(e);
         inputs += assignNumValue(e);
         console.log("inputs:", inputs);
+        operatorIndex = checkOperatorIndex(screen.innerHTML, operationArray);
+        operatorIsBeforeNum = checkOperatorIsBeforeNum(
+          screen.innerHTML,
+          operatorIndex,
+          numberArray
+        );
       }
 
       if (e.target.id == "btn-clear") {
@@ -171,7 +195,6 @@ function checkScreen(screen) {
   //// with For loop
   let html = screen.innerHTML;
   let operationArray = ["+", "–", "×", "÷"];
-  console.log("includes subtract", html.includes(operationArray[0]));
   for (let i = 0; i < operationArray.length; i++) {
     if (html.includes(operationArray[i])) {
       console.log("includes ops");
@@ -179,6 +202,22 @@ function checkScreen(screen) {
     }
   }
   return false;
+}
+
+function replaceOperator(e, screen) {
+  let html = screen.innerHTML;
+  let operationArray = ["+", "–", "×", "÷"];
+  let operator = displayOperator(e);
+
+  for (let i = 0; i < operationArray.length; i++) {
+    if (html.includes(operationArray[i])) {
+      console.log(
+        "#replace",
+        html.replace(operationArray[i], displayOperator(e))
+      );
+      return html.replace(operationArray[i], displayOperator(e));
+    }
+  }
 }
 function handleNumClick(e) {
   let screen = document.querySelector(".screen");
@@ -197,4 +236,41 @@ function assignNumValue(e) {
       return input;
     }
   }
+}
+
+//ideas::
+// Problem: ex. for screen 2x4 when clicking an operative
+// btn after, the replaceOperator function changes the
+// existing operative sign ex. 2-4
+
+// solution... : check if there is a number after the operative sign
+// how:
+// Find location of the operative
+// if the next index is equal to a number
+// then do not execute the replaceOperator function
+
+//Check index of operator
+function checkOperatorIndex(html, operationArray) {
+  //find location of operative
+  let htmlArray = html.split("");
+  for (let i = 0; i < htmlArray.length; i++) {
+    for (let j = 0; j < operationArray.length; j++) {
+      operationArray[j];
+      if (htmlArray[i] == operationArray[j]) {
+        console.log("op is at index", i);
+        return i;
+      }
+    }
+  }
+}
+
+//Check to see if there is an # after the operator
+function checkOperatorIsBeforeNum(html, index, numberArray) {
+  let htmlArray = html.split("");
+  for (let i = 0; i < numberArray.length; i++) {
+    if (htmlArray[index + 1] == numberArray[i]) {
+      return true;
+    }
+  }
+  return false;
 }
