@@ -84,7 +84,9 @@ function displayInputs() {
   let operatorIsBeforeNum;
   // boolean value if operation i"s in screen.innerHTML
   let containsOperator;
-  // iterate through each array item
+
+  // boolean value if total value is being operated
+  let isTotalOperated;
 
   for (num of numbers) {
     num.addEventListener("click", function (e) {
@@ -99,6 +101,7 @@ function displayInputs() {
         containsOperator == false
       ) {
         containsOperator = checkScreen(screen);
+        isTotalOperated = false;
         displayOperator(e);
 
         screen.innerHTML += displayOperator(e);
@@ -124,17 +127,46 @@ function displayInputs() {
         console.log("contains true: ", screen.innerHTML);
       }
 
+      // if an operator is pressed when there are pair of nums
+      if (
+        e.target.className == "btn btn-op" &&
+        containsOperator == true &&
+        operatorIsBeforeNum == true
+      ) {
+        containsOperator = false;
+        console.log("stored#op:", inputs);
+        inputs = parseInt(inputs);
+        inputsArray.push(inputs);
+        total = operate(inputsArray, operator);
+        screen.innerHTML = total;
+        inputsArray = [];
+        inputsArray.push(total);
+      }
+
       if (
         e.target.className == "btn btn-op" &&
         // screen.innerHTML !== "" &&
         total !== undefined &&
         containsOperator == false
       ) {
-        // screen.innerHTML = null;
+        isTotalOperated = true;
         screen.innerHTML += displayOperator(e);
         containsOperator = checkScreen(screen);
         inputs = [];
         operator = chooseOperator(e);
+      }
+
+      //if a num btn is clicked after a total is calculated
+      if (
+        e.target.className == "btn btn-num" &&
+        total !== undefined &&
+        isTotalOperated == false
+      ) {
+        console.log("operated total");
+        screen.innerHTML = null;
+        total = undefined;
+        inputs = [];
+        inputsArray = [];
       }
 
       // when click "="
@@ -219,6 +251,7 @@ function replaceOperator(e, screen) {
     }
   }
 }
+
 function handleNumClick(e) {
   let screen = document.querySelector(".screen");
   let numValue = assignNumValue(e);
@@ -237,17 +270,6 @@ function assignNumValue(e) {
     }
   }
 }
-
-//ideas::
-// Problem: ex. for screen 2x4 when clicking an operative
-// btn after, the replaceOperator function changes the
-// existing operative sign ex. 2-4
-
-// solution... : check if there is a number after the operative sign
-// how:
-// Find location of the operative
-// if the next index is equal to a number
-// then do not execute the replaceOperator function
 
 //Check index of operator
 function checkOperatorIndex(html, operationArray) {
@@ -274,3 +296,12 @@ function checkOperatorIsBeforeNum(html, index, numberArray) {
   }
   return false;
 }
+
+//Problem:
+// //
+// calculate the pair of numbers when an operation is clicked
+
+//Solution:
+// //
+// check to see if there is a num after the operator and if
+// the operator is clicked then evaluate the pair of numbers
