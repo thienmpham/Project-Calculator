@@ -23,9 +23,14 @@ function multiply(nums) {
 }
 
 function divide(nums) {
+  let isZero;
   let total = 1;
   for (let i = 0; i < nums.length - 1; i++) {
     total = nums[i] / nums[i + 1];
+    if (nums[i] == 0) {
+      isZero = true;
+      return isZero;
+    }
   }
   return total;
 }
@@ -88,8 +93,20 @@ function displayInputs() {
   // boolean value if total value is being operated
   let isTotalOperated;
 
+  let isZero;
+
   for (num of numbers) {
     num.addEventListener("click", function (e) {
+      // do nothing after dividing by 0
+      if (
+        isZero == true &&
+        (e.target.className == "btn btn-num" ||
+          e.target.className == "btn btn-op" ||
+          e.target.id == "btn-equals")
+      ) {
+        console.log("askdjfas");
+        return;
+      }
       // initial total
       if (e.target.className == "btn btn-op") {
         containsOperator = checkScreen(screen);
@@ -138,6 +155,7 @@ function displayInputs() {
         inputs = parseInt(inputs);
         inputsArray.push(inputs);
         total = operate(inputsArray, operator);
+        // roundedTotal = Math.round(total * 100000000) / 10000000;
         screen.innerHTML = total;
         inputsArray = [];
         inputsArray.push(total);
@@ -157,6 +175,7 @@ function displayInputs() {
       }
 
       //if a num btn is clicked after a total is calculated
+      //then clear it
       if (
         e.target.className == "btn btn-num" &&
         total !== undefined &&
@@ -167,23 +186,40 @@ function displayInputs() {
         total = undefined;
         inputs = [];
         inputsArray = [];
+        isZero = false;
       }
 
       // when click "="
-      if (e.target.id == "btn-equals") {
+      if (
+        e.target.id == "btn-equals" &&
+        operatorIsBeforeNum == true &&
+        isZero !== true
+      ) {
         containsOperator = false;
         console.log("stored#equals:", inputs);
         inputs = parseInt(inputs);
         inputsArray.push(inputs);
         console.log("storedArray#equals:", inputsArray);
         total = operate(inputsArray, operator);
+        // roundedTotal = Math.round(total * 100000000) / 10000000;
         screen.innerHTML = total;
         inputsArray = [];
         inputsArray.push(total);
       }
 
-      //when any # is clicked
+      if (e.target.id == "btn-equals") {
+        isZero = operate(inputsArray, operator);
+      }
+      if (e.target.id == "btn-equals" && isZero == true) {
+        screen.innerHTML == "YOU CANT DO THAT SILLY!";
+      }
+      //if divided by 0
+      if (e.target.id == "btn-equals" && isZero == true) {
+        screen.innerHTML = "YOU CANT DO THAT SILLY";
+      }
+
       if (e.target.className == "btn btn-num") {
+        //when any # is clicked
         handleNumClick(e);
         inputs += assignNumValue(e);
         console.log("inputs:", inputs);
@@ -201,6 +237,7 @@ function displayInputs() {
         inputs = [];
         inputsArray = [];
         containsOperator = console.log("clear");
+        isZero = false;
       }
     });
   }
