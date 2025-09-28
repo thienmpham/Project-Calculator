@@ -12,17 +12,29 @@ button {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 20vw;
+  height: 20vw;
 }
 .screen-container {
+  display: flex;
   height: 5vw;
-
+  justify-content: flex-end;
   padding-bottom: 5%;
 }
 .screen {
   background-color: yellow;
   outline: 0.1vw solid;
-  height: 90%;
+  /* height: 90%; */
   border-radius: 20px;
+  padding: 1vw;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: clip;
+}
+#span-screen {
+  float: right;
+  font-size: 1.5rem;
 }
 .calculator {
   display: flex;

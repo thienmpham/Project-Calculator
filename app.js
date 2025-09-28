@@ -25,16 +25,24 @@ function multiply(nums) {
 function divide(nums) {
   let isZero;
   let total = 1;
+  checkIfDivideByZero(nums);
+  console.log("check if zero:", checkIfDivideByZero(nums));
   for (let i = 0; i < nums.length - 1; i++) {
     total = nums[i] / nums[i + 1];
-    if (nums[i] == 0) {
-      isZero = true;
-      return isZero;
-    }
   }
   return total;
 }
-
+function checkIfDivideByZero(nums) {
+  for (let i = 0; i < nums.length - 1; i++) {
+    if (nums[i] == 0 && nums[i + 1] == undefined) {
+      console.log("checking if zero: true");
+      return true;
+    } else {
+      console.log("checking if zero: false");
+      return false;
+    }
+  }
+}
 function operate(inputs, operator) {
   if (operator == "add") {
     console.log(add(inputs));
@@ -79,7 +87,7 @@ function displayInputs() {
   let numbers = document.querySelectorAll(".btn");
   let inputs = [];
   let inputsArray = [];
-  let screen = document.querySelector(".screen");
+  let screen = document.querySelector("#span-screen");
   let operator;
   let total;
 
@@ -209,6 +217,7 @@ function displayInputs() {
 
       if (e.target.id == "btn-equals") {
         isZero = operate(inputsArray, operator);
+        console.log("isZero:", isZero);
       }
       if (e.target.id == "btn-equals" && isZero == true) {
         screen.innerHTML == "YOU CANT DO THAT SILLY!";
@@ -290,7 +299,7 @@ function replaceOperator(e, screen) {
 }
 
 function handleNumClick(e) {
-  let screen = document.querySelector(".screen");
+  let screen = document.querySelector("#span-screen");
   let numValue = assignNumValue(e);
 
   screen.innerHTML += numValue;
