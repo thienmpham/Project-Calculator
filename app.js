@@ -25,24 +25,30 @@ function multiply(nums) {
 function divide(nums) {
   let isZero;
   let total = 1;
-  checkIfDivideByZero(nums);
+  isZero = checkIfDivideByZero(nums);
   console.log("check if zero:", checkIfDivideByZero(nums));
+
+  if (isZero == true) {
+    return true;
+  }
   for (let i = 0; i < nums.length - 1; i++) {
     total = nums[i] / nums[i + 1];
   }
   return total;
 }
 function checkIfDivideByZero(nums) {
-  for (let i = 0; i < nums.length - 1; i++) {
-    if (nums[i] == 0 && nums[i + 1] == undefined) {
+  console.log("nums:", nums);
+  console.log("nums legnth:", nums.length);
+  for (i = 0; i < nums.length; i++) {
+    if (nums[i] == 0) {
       console.log("checking if zero: true");
       return true;
-    } else {
-      console.log("checking if zero: false");
-      return false;
     }
   }
+
+  return false;
 }
+
 function operate(inputs, operator) {
   if (operator == "add") {
     console.log(add(inputs));
@@ -197,6 +203,12 @@ function displayInputs() {
         isZero = false;
       }
 
+      if (e.target.id == "btn-equals") {
+        inputs = parseInt(inputs);
+        inputsArray.push(inputs);
+        isZero = checkIfDivideByZero(inputsArray);
+        console.log("isZero:", isZero);
+      }
       // when click "="
       if (
         e.target.id == "btn-equals" &&
@@ -204,27 +216,40 @@ function displayInputs() {
         isZero !== true
       ) {
         containsOperator = false;
-        console.log("stored#equals:", inputs);
-        inputs = parseInt(inputs);
-        inputsArray.push(inputs);
-        console.log("storedArray#equals:", inputsArray);
+        // console.log("stored#equals:", inputs);
+        // inputs = parseInt(inputs);
+        // inputsArray.push(inputs);
+        // console.log("storedArray#equals:", inputsArray);
         total = operate(inputsArray, operator);
         // roundedTotal = Math.round(total * 100000000) / 10000000;
         screen.innerHTML = total;
         inputsArray = [];
         inputsArray.push(total);
       }
-
-      if (e.target.id == "btn-equals") {
-        isZero = operate(inputsArray, operator);
-        console.log("isZero:", isZero);
+      // if inputsArray contains a zero but its
+      // not being divided
+      if (
+        e.target.id == "btn-equals" &&
+        isZero == true &&
+        operator !== "divide"
+      ) {
+        total = operate(inputsArray, operator);
+        screen.innerHTML = total;
+        inputsArray = [];
+        inputsArray.push(total);
       }
-      if (e.target.id == "btn-equals" && isZero == true) {
-        screen.innerHTML == "YOU CANT DO THAT SILLY!";
+      //if divided by 0
+      if (
+        e.target.id == "btn-equals" &&
+        isZero == true &&
+        operator == "divide"
+      ) {
+        // inputs = parseInt(inputs);
+        // inputsArray.push(inputs);
+        screen.innerHTML = "YOU CANT DO THAT SILLY";
       }
       //if divided by 0
       if (e.target.id == "btn-equals" && isZero == true) {
-        screen.innerHTML = "YOU CANT DO THAT SILLY";
       }
 
       if (e.target.className == "btn btn-num") {
